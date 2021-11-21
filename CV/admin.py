@@ -7,7 +7,7 @@ from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.db.models import fields
 from django.utils.safestring import mark_safe
 
-from .models import Person, WorkHistory, Skill, Project, PersonSkill
+from .models import Person, WorkHistory, Skill, Project
 
 admin.site.site_header = "CV"
 admin.site.site_title = "CV"
@@ -62,23 +62,24 @@ class ProjectInLine(admin.TabularInline):
     extra = 1
     fields = ('name','link','description')
     
-class SkilsInLine(admin.StackedInline):
-    """Inline Skils in PesonAdmin"""
-    model = PersonSkill
-    extra = 3
+# class SkilsInLine(admin.StackedInline):
+#     """Inline Skils in PesonAdmin"""
+#     model = Skill
+#     extra = 3
 
 
 """**********************************Admins**************************************"""
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     """Person"""
-    list_display = ('id','name','surname', 'get_image')
-    list_display_links = ('id','name','surname')
+    list_display = ('name','surname', 'get_image')
+    list_display_links = ('name','surname')
     search_fields = ('name','urname',)
     save_on_top=True
     form=PersonAdminForm
-    inlines = [SkilsInLine, WorkHistoryInLine, ProjectInLine]
+    inlines = [WorkHistoryInLine, ProjectInLine]
     readonly_fields = ('get_image',)
+    prepopulated_fields = {"url":('name', 'surname')}
     fieldsets = (
         (None, {
             "fields": (
@@ -90,9 +91,19 @@ class PersonAdmin(admin.ModelAdmin):
                 (('phone', 'email','city'),)
             ),
         }),
-                (None, {
+        (None, {
+            "fields": (
+                (('skill'),)
+            ),
+        }),
+        (None, {
             "fields": (
                 ('about',)
+            ),
+        }),
+        (None, {
+            "fields": (
+                ('url',)
             ),
         }),
     )

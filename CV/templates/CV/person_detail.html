@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{%block title%}asdfvadsva{%endblock%}
+
+{%block content%} 
+    {{person.name}}
+    {{person.surname}}
+    {{person.skill.all}}
+
+    {% for skill in person.skill.all%}
+        {{skill.name}}
+    {% endfor %} 
+
+
+
+{%endblock%}
