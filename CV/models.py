@@ -33,7 +33,9 @@ class Person(models.Model):
     email = models.CharField(max_length=40, verbose_name='e-mail', blank=True, null = True)
     city =  models.CharField(max_length=100, verbose_name='address', blank=True, null = True)
     url = models.SlugField(max_length=160, unique=True, blank=True, null=True)
-    skill = models.ManyToManyField(Skill, verbose_name='Skills', related_name='person_skill', blank=True, null=True)
+    skill = models.ManyToManyField(Skill, verbose_name='Skills', related_name='person_skill', blank=True)
+    
+    
     class Meta:
         verbose_name='Person'
         verbose_name_plural='Persons'
@@ -77,6 +79,8 @@ class Project(models.Model):
 
     def __str__(self):
         return f"{self.person} project: {self.name}"
+
+
     
 
 # class PersonSkill(models.Model): 
